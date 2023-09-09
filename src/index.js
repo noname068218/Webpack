@@ -31,5 +31,46 @@
 
 // console.log(sum(2, 3));
 
+import "./styles/style.css";
+const simpleForm = document.querySelector("#form");
+const formText = document.querySelector("#input");
+const btnForm = document.querySelector(".addBtn");
+const ulAllContent = document.querySelector(".second-list-js");
+const clearListLocal = document.querySelector(".clear-list");
+clearListLocal.addEventListener("click", oneClick);
+function oneClick(evt) {
+  localStorage.clear(evt);
+  ulAllContent.textContent = "";
+}
+window.addEventListener("load", () => {
+  const storedItems = JSON.parse(localStorage.getItem("items")) || [];
+  for (const item of storedItems) {
+    appendListItem(item);
+  }
+});
 
-import './styles/style.css'
+function fromContent(event) {
+  event.preventDefault();
+  const inputTextEl = formText.value;
+
+  appendListItem(inputTextEl);
+
+  saveToLocalStorage(inputTextEl);
+
+  formText.value = "";
+}
+
+function appendListItem(text) {
+  const screenText = `<li>${text}</li>`;
+  ulAllContent.innerHTML += screenText;
+}
+
+function saveToLocalStorage(item) {
+  const storedItems = JSON.parse(localStorage.getItem("items")) || [];
+
+  storedItems.push(item);
+
+  localStorage.setItem("items", JSON.stringify(storedItems));
+}
+
+// СТВОРЮЄМО КНОПОЧКУ, ПРИ ЯКОМУ БУДЕ ОЧИЩАВСЯ ЛОКАЛ СТОРЕДЖ
